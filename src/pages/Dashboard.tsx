@@ -55,9 +55,8 @@ const Sidebar = ({
   return (
     <div className="w-[280px] h-full bg-gray-50 border-r border-gray-200 flex flex-col">
       <div className="p-4 border-b border-gray-200 bg-white">
-        <h1 className="text-xl font-bold text-primary">Business CRM</h1>
+        <h1 className="text-xl font-bold text-primary">INSIGHT CRM</h1>
       </div>
-
       <div className="flex-1 overflow-auto p-4">
         <nav className="space-y-6">
           <div>
@@ -222,7 +221,6 @@ const Sidebar = ({
           </div>
         </nav>
       </div>
-
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center">
           <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -260,7 +258,6 @@ const Header = ({
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
-
       <div className="flex items-center space-x-4">
         <button className="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
           <Bell className="h-5 w-5" />
@@ -470,7 +467,6 @@ const Dashboard = () => {
         favoriteBusinesses={favoriteBusinesses}
         onFavoriteClick={handleBusinessClick}
       />
-
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <Header />
