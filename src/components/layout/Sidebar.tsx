@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
+import { Link, useLocation } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
@@ -65,8 +66,11 @@ const Sidebar = ({
     },
   ],
   onFavoriteSelect = () => {},
-  activePath = "/dashboard",
+  activePath,
 }: SidebarProps) => {
+  const location = useLocation();
+  const currentPath = activePath || location.pathname;
+
   const navItems = [
     {
       icon: <LayoutDashboard className="h-5 w-5" />,
@@ -137,14 +141,21 @@ const Sidebar = ({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      variant={activePath === item.path ? "secondary" : "ghost"}
+                      variant={
+                        currentPath === item.path ? "secondary" : "ghost"
+                      }
                       className={cn(
                         "w-full justify-start",
                         collapsed ? "px-2" : "px-3",
                       )}
+                      asChild
                     >
-                      {item.icon}
-                      {!collapsed && <span className="ml-3">{item.label}</span>}
+                      <Link to={item.path}>
+                        {item.icon}
+                        {!collapsed && (
+                          <span className="ml-3">{item.label}</span>
+                        )}
+                      </Link>
                     </Button>
                   </TooltipTrigger>
                   {collapsed && (
@@ -187,11 +198,14 @@ const Sidebar = ({
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="flex justify-center">
+                          <Link
+                            to={`/business/${business.id}`}
+                            className="flex justify-center"
+                          >
                             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold cursor-pointer">
                               {business.name.substring(0, 2).toUpperCase()}
                             </div>
-                          </div>
+                          </Link>
                         </TooltipTrigger>
                         <TooltipContent side="right">
                           {business.name}
@@ -200,16 +214,18 @@ const Sidebar = ({
                     </TooltipProvider>
                   ) : (
                     <div className="px-2">
-                      <BusinessCard
-                        id={business.id}
-                        name={business.name}
-                        logo={business.logo}
-                        industry={business.industry}
-                        status={business.status}
-                        isFavorite={true}
-                        contactCount={0}
-                        onClick={() => onFavoriteSelect(business.id)}
-                      />
+                      <Link to={`/business/${business.id}`}>
+                        <BusinessCard
+                          id={business.id}
+                          name={business.name}
+                          logo={business.logo}
+                          industry={business.industry}
+                          status={business.status}
+                          isFavorite={true}
+                          contactCount={0}
+                          onClick={() => onFavoriteSelect(business.id)}
+                        />
+                      </Link>
                     </div>
                   )}
                 </div>

@@ -415,8 +415,46 @@ const Dashboard = () => {
   const favoriteBusinesses = businesses.filter((b) => b.isFavorite);
 
   // Handle favorite toggle
-  const handleFavoriteToggle = (id: string) => {
-    console.log(`Toggle favorite for business: ${id}`);
+  const handleFavoriteToggle = async (id: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data: existingFavorite } = await supabase
+        .from("favorites")
+        .select("id")
+        .eq("business_id", id)
+        .eq(
+          "user_id",
+          supabase.auth.getUser().then(({ data }) => data.user?.id),
+        )
+        .single();
+
+      if (existingFavorite) {
+        // Remove from favorites
+        await supabase.from("favorites").delete().eq("id", existingFavorite.id);
+      } else {
+        // Add to favorites
+        const { data: userData } = await supabase.auth.getUser();
+        await supabase.from("favorites").insert([
+          {
+            user_id: userData.user?.id,
+            business_id: id,
+          },
+        ]);
+      }
+
+      // Update the businesses in state
+      const updatedBusinesses = businesses.map((business) => {
+        if (business.id === id) {
+          return { ...business, isFavorite: !business.isFavorite };
+        }
+        return business;
+      });
+
+      // This would be replaced with actual state update in a real implementation
+      console.log(`Toggled favorite for business: ${id}`);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
 
   // Handle business click

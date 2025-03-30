@@ -42,7 +42,7 @@ const BusinessCard = ({
     Inactive: "bg-gray-100 text-gray-800",
   };
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     onFavoriteToggle(id);
   };
